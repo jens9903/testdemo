@@ -14,7 +14,7 @@ import './wardpage/Ward.css';
 
 function App() {
   return (
-    <Router>
+    <Router basename='testdemo'>
       <Routes>
         <Route exact path="/" element={<Cmccweb />} />
         <Route exact path="/about" element={<Page2nd />} />
