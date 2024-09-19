@@ -12,7 +12,7 @@ const GeoServerLayer = ({ map, visible, layerName }) => {
 
     const wmsLayer = new TileLayer({
       source: new TileWMS({
-        url: 'http://13.127.98.21:8080/geoserver/CCMC_DEMO/wms?',
+        url: 'https://agrex-demo.farmwiseai.com/geoserver/CCMC_DEMO/wms?',
         params: {
           'LAYERS': layerName,
           'TILED': true,
