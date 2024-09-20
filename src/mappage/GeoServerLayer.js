@@ -12,10 +12,11 @@ const GeoServerLayer = ({ map, visible, layerName }) => {
 
     const wmsLayer = new TileLayer({
       source: new TileWMS({
-        url: 'https://agrex-demo.farmwiseai.com/geoserver/CCMC_DEMO/wms?',
+        url: 'https://agrex-demo.farmwiseai.com/geoserver/ccmcproject/wms?',
         params: {
           'LAYERS': layerName,
           'TILED': true,
+          
           'FORMAT': 'image/png',
           'TRANSPARENT': true,
         },

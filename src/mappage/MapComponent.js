@@ -6,37 +6,42 @@ import TileLayer from 'ol/layer/Tile';
 import XYZ from 'ol/source/XYZ';
 import { fromLonLat } from 'ol/proj';
 import GeoServerLayer from './GeoServerLayer';
-
 import LayersPanel from './LayersPanel';
-import { MenuOutlined } from '@ant-design/icons';
- 
+import SearchPanel from './SearchPanel'; // Fix: Change the import to SearchPanel
+import { MenuOutlined, SearchOutlined } from '@ant-design/icons';
+
 const MapComponent = () => {
   const [deliverablesCheckedList, setDeliverablesCheckedList] = useState([]);
   const [layersCheckedList, setLayersCheckedList] = useState([]);
   const [usagevariationCheckedList, setUsagevariationCheckedList] = useState([]);
   const [isLayersVisible, setIsLayersVisible] = useState(false);
+  const [isSearchPanelVisible, setIsSearchPanelVisible] = useState(false); // State to toggle search panel visibility
   const [map, setMap] = useState(null);
- 
+
   const deliverablesOptions = ['Area variation above 50%', 'Usage variation', 'New Bills'];
   const layersOptions = ['Survey completed', 'Building layers', 'Road layers', 'Drone image', 'Ward boundary', 'Satellite image'];
   const usagevariationOptions = ['Residential to commercial', 'Residential to mixed', 'Residential to under construction'];
- 
+
   const toggleLayersPanel = () => {
     setIsLayersVisible(!isLayersVisible);
   };
- 
+
+  const toggleSearchPanel = () => {
+    setIsSearchPanelVisible(!isSearchPanelVisible);
+  };
+
   const onDeliverablesChange = (list) => {
     setDeliverablesCheckedList(list);
   };
- 
+
   const onLayersChange = (list) => {
     setLayersCheckedList(list);
   };
- 
+
   const onUsagevariationChange = (list) => {
     setUsagevariationCheckedList(list);
   };
- 
+
   useEffect(() => {
     const initialMap = new Map({
       target: 'map',
@@ -52,16 +57,17 @@ const MapComponent = () => {
         zoom: 16,
       }),
     });
- 
+
     setMap(initialMap);
- 
+
     return () => {
       initialMap.setTarget(null); // Clean up the map on unmount
     };
   }, []);
- 
+
   return (
     <div className='button1'>
+      {/* Button to toggle layers panel */}
       {!isLayersVisible && (
         <button
           onClick={toggleLayersPanel}
@@ -81,7 +87,8 @@ const MapComponent = () => {
           <MenuOutlined style={{ fontSize: '20px' }} />
         </button>
       )}
- 
+
+      {/* Layers Panel */}
       {isLayersVisible && (
         <LayersPanel
           deliverablesOptions={deliverablesOptions}
@@ -97,14 +104,36 @@ const MapComponent = () => {
           isLayersVisible={isLayersVisible}
         />
       )}
- 
+
+      {/* Search Panel Icon (Right Side) */}
+      <button
+        onClick={toggleSearchPanel}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '45px',
+          zIndex: 1000,
+          backgroundColor: 'white',
+          border: 'none',
+          borderRadius: '50%',
+          padding: '10px',
+          cursor: 'pointer',
+          boxShadow: '0 2px 5px rgba(0,0,0,0.2)',
+        }}
+      >
+        <SearchOutlined style={{ fontSize: '20px' }} />
+      </button>
+
+      {/* Render the SearchPanel */}
+      <SearchPanel isVisible={isSearchPanelVisible} toggleSearchPanel={toggleSearchPanel} />
+
       <div id="map" style={{ height: '100%', width: '100%' }}></div>
- 
+
       {/* GeoServer Layers */}
-      {layersCheckedList.includes('Building layers') && <GeoServerLayer map={map} visible={true} layerName="CCMC_DEMO:Building_final" />}
-      
+      {layersCheckedList.includes('Building layers') && <GeoServerLayer map={map} visible={true} layerName="ccmcproject:Ward_28_Buildings" />}
+      {layersCheckedList.includes('Road layers') && <GeoServerLayer map={map} visible={true} layerName="	ccmcproject:Ward_028_Road" />}
     </div>
   );
 };
- 
+
 export default MapComponent;
