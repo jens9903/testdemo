@@ -68,7 +68,7 @@ const MapComponent = () => {
           style={{
             position: 'absolute',
             top: '10px',
-            left: '30px',
+            left: '40px',
             zIndex: 1000,
             backgroundColor: 'white',
             border: 'none',
